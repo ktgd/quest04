@@ -2,13 +2,14 @@
 
 unalias mf;
 unalias md;
+unalias ascii;
 unalias g;
 unalias k;
 unalias d;
 unalias l;
 unalias c;
 
-mf ()
+mf()
 {
 	S="${@}";
 	s=;
@@ -17,7 +18,7 @@ mf ()
 	do
 		if [ -e "${s}" ];
 		then
-			printf "${s}: file exists\n";
+			printf '%s\n' "${s}: file exists";
 		else
 			:> "${s}";
 			printf '\n' >> "${s}";
@@ -27,7 +28,7 @@ mf ()
 # mf	make files
 # touch tempers with the timestamps. mkfile does not create empty files. Sometimes, that's all you need.
 
-md ()
+md()
 {
 	#d=${1} && n=${2}; #m=${1};
 	n=${1};
@@ -38,9 +39,25 @@ md ()
 	do
 		printf -v j '%02d' ${i}; #printf -v j "%0${d}d" ${i}; #printf -v j "%0${m}d" ${i};
 		mkdir ex${j};
-	done; #printf 'DEBUG\t'; m=3; n=20; for (( i = 0; i <= ${n}; i++ )); do printf -v j "%0${m}d\n" ${i}; printf '%s\n' ${j}; done;
+	done; #printf 'debug\t'; m=3; n=20; for (( i = 0; i <= ${n}; i++ )); do printf -v j "%0${m}d\n" ${i}; printf '%s\n' ${j}; done;
 }; # md, mkdr, makedirectories
 # md	make (the) directories
+
+ascii()
+{
+	i=0;
+
+	case ${1} in
+		printable | p | --printable | -p )
+			for (( i = 32; i < 127; i++ ));
+			do
+				printf \\$(printf %03o ${i};);
+			done;;
+		* )
+			printf '%s' "${1}: option does not exist";;
+	esac;
+	printf '\n';
+};
 
 alias g='git';
 alias k='[ -e ./0 ] && rm 0; gcc -o 0 *.c && ./0; rm 0;';
@@ -50,7 +67,7 @@ alias c="printf '\033[2J\033[3J\033[1;1H';";
 
 # Filename:		.rc
 # Title:		Karl's Runcom
-# Version:		2.01 (season-01-arc-01-mar-2021-11)
+# Version:		2.10 (season-01-arc-01-mar-2021-11)
 # Description:	A runcom for the projects of Qwasar Silicon Valley.
 #
 # Author:		Karl `kvpb`
